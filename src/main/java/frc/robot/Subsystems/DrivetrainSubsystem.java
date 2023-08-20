@@ -9,9 +9,14 @@ import java.util.function.DoubleSupplier;
 import com.ctre.phoenixpro.controls.VoltageOut;
 import com.ctre.phoenixpro.hardware.TalonFX;
 
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
 
 /** Add your docs here. */
-public class DrivetrainSubsystem {
+public class DrivetrainSubsystem extends SubsystemBase {
     TalonFX leftFalcon = new TalonFX(Constants.drivetrainLeftFalconID);
     TalonFX rightFalcon = new TalonFX(Constants.drivetrainRightFalconID);
 
@@ -25,6 +30,12 @@ public class DrivetrainSubsystem {
         leftFalcon.setControl(leftVoltage.withOutput(left));
         rightFalcon.setControl(rightVoltage.withOutput(left));
     }
-
+    public CommandBase setVoltagesCommand(DoubleSupplier drive, DoubleSupplier steer) {
+        return new RunCommand(() -> {
+            var speeds = DifferentialDrive.arcadeDriveIK(drive.getAsDouble(), steer.getAsDouble(), false);
+            this.setVoltages(speeds.left * 12, speeds.right * 12);
+        });
+    }
+    
 }
 
