@@ -34,7 +34,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         return new RunCommand(() -> {
             var speeds = DifferentialDrive.arcadeDriveIK(drive.getAsDouble(), steer.getAsDouble(), false);
             this.setVoltages(speeds.left * 12, speeds.right * 12);
-        });
+        }, this);
     }
     
 }
