@@ -30,7 +30,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         leftFalcon.setControl(leftVoltage.withOutput(left));
         rightFalcon.setControl(rightVoltage.withOutput(left));
     }
-    public CommandBase setVoltagesCommand(DoubleSupplier drive, DoubleSupplier steer) {
+    public CommandBase setVoltagesArcadeCommand(DoubleSupplier drive, DoubleSupplier steer) {
         return new RunCommand(() -> {
             var speeds = DifferentialDrive.arcadeDriveIK(drive.getAsDouble(), steer.getAsDouble(), false);
             this.setVoltages(speeds.left * 12, speeds.right * 12);

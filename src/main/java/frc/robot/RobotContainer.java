@@ -20,8 +20,19 @@ public class RobotContainer {
     configureBindings();
   }
 
-  private void configureBindings() {}
+  private void configureBindings() {
+    drivetrainSubsystem.setDefaultCommand(
+    drivetrainSubsystem.setVoltagesArcadeCommand(
+        () -> modifyJoystick(controller.getLeftY()),
+        () -> modifyJoystick(controller.getRightX())));
 
+  }
+  private double modifyJoystick(double in) {
+    if (Math.abs(in) < 0.05) {
+      return 0;
+    }
+    return in * in * Math.signum(in);
+  }
   public Command getAutonomousCommand() {
     return Commands.print("No autonomous command configured");
   }
