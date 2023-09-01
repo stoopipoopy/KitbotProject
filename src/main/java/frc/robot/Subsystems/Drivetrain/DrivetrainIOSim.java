@@ -8,6 +8,7 @@ import com.ctre.phoenixpro.controls.VoltageOut;
 import com.ctre.phoenixpro.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
+import edu.wpi.first.wpilibj.simulation.RoboRioSim;
 import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim.KitbotGearing;
 import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim.KitbotMotor;
 import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim.KitbotWheelSize;
@@ -35,10 +36,21 @@ public class DrivetrainIOSim implements DrivetrainIO {
 
 
         var leftSimState = leftFalcon.getSimState();
-        var rightSimState = rightFalcon.getSimState();
+        leftSimState.setSupplyVoltage(RoboRioSim.getVInVoltage());
 
+        var rightSimState = rightFalcon.getSimState();
+        rightSimState.setSupplyVoltage(RoboRioSim.getVInVoltage());
+        
         inputs.leftOutputVolts = leftSimState.getMotorVoltage();
         inputs.rightOutputVolts = rightSimState.getMotorVoltage();
+
+        inputs.leftVelocityMetersPerSecond = physicsSim.getLeftVelocityMetersPerSecond();
+        inputs.rightVelocityMetersPerSecond = physicsSim.getRightVelocityMetersPerSecond();
+
+        inputs.leftPositionMeters = physicsSim.getLeftPositionMeters();
+        inputs.rightPositionMeters = physicsSim.getRightPositionMeters();
+
+        
 
         inputs.leftOutputVolts = 0.0;
         inputs.rightOutputVolts = 0.0;
